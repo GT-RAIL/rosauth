@@ -1,0 +1,9 @@
+.cproject
+.project
+.pydevproject
+.svn
+bin
+build
+srv_gen
+src/rosauth
+

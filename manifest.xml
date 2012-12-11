@@ -1,0 +1,9 @@
+<package>
+  <description brief="Server side tools for authorization and authentication of ROS clients.">Server side tools for authorization and authentication of ROS clients.</description>
+  <author>Russell Toris</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes="" />
+  <url>http://ros.org/wiki/rosauth</url>
+
+  <depend package="roscpp" />
+</package>
