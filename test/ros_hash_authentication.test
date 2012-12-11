@@ -1,0 +1,5 @@
+<launch>
+  <param name="/ros_hash_authentication/secret_file_location" value="$(find rosauth)/test/valid.secret" />
+  <node pkg="rosauth" type="ros_hash_authentication" name="ros_hash_authentication" />
+  <test test-name="ros_hash_authentication_test" pkg="rosauth" type="ros_hash_authentication_test" />
+</launch>
