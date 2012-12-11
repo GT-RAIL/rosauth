@@ -4,6 +4,7 @@
 .svn
 bin
 build
+lib
 srv_gen
 src/rosauth
 

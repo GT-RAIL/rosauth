@@ -17,6 +17,12 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #generate services
 rosbuild_gensrv()
 
+rosbuild_add_executable(ros_hash_authentication_test test/ros_hash_authentication_test.cpp)
+rosbuild_add_gtest_build_flags(ros_hash_authentication_test)
+target_link_libraries(ros_hash_authentication_test crypto)
+
+rosbuild_add_rostest(test/ros_hash_authentication.test)
+
 rosbuild_add_executable(ros_hash_authentication src/ros_hash_authentication.cpp)
 target_link_libraries(ros_hash_authentication crypto)
 

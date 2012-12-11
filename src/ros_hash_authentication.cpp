@@ -72,7 +72,7 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
   {
     // create the string to hash
     stringstream ss;
-    ss << req.client << req.dest << req.rand << req.t.toNSec() << req.level << req.end.toNSec();
+    ss << secret << req.client << req.dest << req.rand << req.t.toNSec() << req.level << req.end.toNSec();
     string local_hash = ss.str();
 
     // check the request
@@ -82,9 +82,7 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
     // convert to a hex string to compare
     char hex[SHA_DIGEST_LENGTH * 2];
     for (int i = 0; i < SHA_DIGEST_LENGTH; i++)
-    {
       sprintf(&hex[i * 2], "%02x", sha1_hash[i]);
-    }
 
     // an authenticated user must match the hash string
     res.authenticated = (strcmp(hex, req.hash.c_str()) == 0);

@@ -6,4 +6,5 @@
   <url>http://ros.org/wiki/rosauth</url>
 
   <depend package="roscpp" />
+  <depend package="rostest" />
 </package>
