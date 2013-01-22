@@ -1,29 +1,61 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+cmake_minimum_required(VERSION 2.8.3)
+project(rosauth)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-set(ROS_BUILD_TYPE Release)
+## Find catkin macros and libraries
+## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+## is used, also find other catkin packages
+find_package(catkin REQUIRED COMPONENTS roscpp message_generation rostest)
 
-rosbuild_init()
+#######################################
+## Declare ROS messages and services ##
+#######################################
 
-#set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+## Generate services in the 'srv' folder
+add_service_files(
+  FILES
+  Authentication.srv
+)
 
-#generate services
-rosbuild_gensrv()
+## Generate added messages and services with any dependencies listed here
+generate_messages(
+  DEPENDENCIES
+)
 
-rosbuild_add_executable(ros_hash_authentication_test test/ros_hash_authentication_test.cpp)
-rosbuild_add_gtest_build_flags(ros_hash_authentication_test)
-target_link_libraries(ros_hash_authentication_test crypto)
+###################################################
+## Declare things to be passed to other projects ##
+###################################################
 
-rosbuild_add_rostest(test/ros_hash_authentication.test)
+## LIBRARIES: libraries you create in this project that dependent projects also need
+## CATKIN_DEPENDS: catkin_packages dependent projects also need
+## DEPENDS: system dependencies of this project that dependent projects also need
+catkin_package()
 
-rosbuild_add_executable(ros_hash_authentication src/ros_hash_authentication.cpp)
-target_link_libraries(ros_hash_authentication crypto)
+###########
+## Build ##
+###########
 
-rosbuild_make_distribution(0.0.1)
+## Declare a cpp executable
+add_executable(ros_hash_authentication src/ros_hash_authentication.cpp)
+
+## Specify libraries to link a library or executable target against
+target_link_libraries(ros_hash_authentication
+  ${catkin_LIBRARIES} crypto
+)
+
+#############
+## Install ##
+#############
+
+## Mark executables and/or libraries for installation
+install(TARGETS ros_hash_authentication
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+#############
+## Testing ##
+#############
+
+## Add gtest based cpp test target and link libraries
+catkin_add_gtest(ros_hash_authentication_test test/ros_hash_authentication_test.cpp)
+target_link_libraries(ros_hash_authentication_test ${catkin_LIBRARIES} crypto)
+add_rostest(test/ros_hash_authentication.test)
