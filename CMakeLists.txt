@@ -42,6 +42,8 @@ target_link_libraries(ros_hash_authentication
   ${catkin_LIBRARIES} crypto
 )
 
+add_dependencies(ros_hash_authentication ${PROJECT_NAME}_gencpp)
+
 #############
 ## Install ##
 #############
