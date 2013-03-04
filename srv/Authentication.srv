@@ -1,5 +1,5 @@
-# Hash string given by the client
-string hash
+# MAC string given by the client
+string mac
 # IP of the client
 string client
 # IP of the destination
