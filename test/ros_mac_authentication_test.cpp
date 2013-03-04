@@ -1,15 +1,3 @@
-/*!
- * \file ros_hash_authentication.cpp
- * \brief Provides authentication via hash strings.
- *
- * This node provides a service call that can be used to authenticate a user to use the ROS server.
- * The node relies on a hash string that is made up of several pieces of information and hashed
- * using the SHA-1 algorithm.
- *
- * \author Russell Toris, WPI - rctoris@wpi.edu
- * \date December 10, 2012
- */
-
 #include <fstream>
 #include <gtest/gtest.h>
 #include <openssl/sha.h>
@@ -48,7 +36,7 @@ TEST(RosHashAuthentication, validAuthentication)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -85,7 +73,7 @@ TEST(RosHashAuthentication, invalidSecret)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -122,7 +110,7 @@ TEST(RosHashAuthentication, invalidClientIP)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -159,7 +147,7 @@ TEST(RosHashAuthentication, invalidDestinationIP)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -196,7 +184,7 @@ TEST(RosHashAuthentication, invalidRand)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -234,7 +222,7 @@ TEST(RosHashAuthentication, oldTime)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -272,7 +260,7 @@ TEST(RosHashAuthentication, newTime)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -311,7 +299,7 @@ TEST(RosHashAuthentication, invalidTime)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -348,7 +336,7 @@ TEST(RosHashAuthentication, invalidUserLevel)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -384,7 +372,7 @@ TEST(RosHashAuthentication, oldEndTime)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;
@@ -423,7 +411,7 @@ TEST(RosHashAuthentication, invalidEndTime)
 
   // make the request
   rosauth::Authentication srv;
-  srv.request.hash = string(hex);
+  srv.request.mac = string(hex);
   srv.request.client = client_ip;
   srv.request.dest = dest_ip;
   srv.request.rand = rand;

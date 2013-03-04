@@ -35,21 +35,21 @@ catkin_package()
 ###########
 
 ## Declare a cpp executable
-add_executable(ros_hash_authentication src/ros_hash_authentication.cpp)
+add_executable(ros_mac_authentication src/ros_mac_authentication.cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(ros_hash_authentication
+target_link_libraries(ros_mac_authentication
   ${catkin_LIBRARIES} crypto
 )
 
-add_dependencies(ros_hash_authentication ${PROJECT_NAME}_gencpp)
+add_dependencies(ros_mac_authentication ${PROJECT_NAME}_gencpp)
 
 #############
 ## Install ##
 #############
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ros_hash_authentication
+install(TARGETS ros_mac_authentication
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -58,6 +58,6 @@ install(TARGETS ros_hash_authentication
 #############
 
 ## Add gtest based cpp test target and link libraries
-catkin_add_gtest(ros_hash_authentication_test test/ros_hash_authentication_test.cpp)
-target_link_libraries(ros_hash_authentication_test ${catkin_LIBRARIES} crypto)
-add_rostest(test/ros_hash_authentication.test)
+add_executable(ros_mac_authentication_test test/ros_mac_authentication_test.cpp)
+target_link_libraries(ros_mac_authentication_test ${catkin_LIBRARIES} ${GTEST_LIBRARIES} crypto)
+add_rostest(test/ros_mac_authentication.test)

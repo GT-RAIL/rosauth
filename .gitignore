@@ -1,10 +1,4 @@
 .cproject
 .project
-.pydevproject
 .svn
-bin
-build
-lib
-srv_gen
-src/rosauth
 
