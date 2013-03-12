@@ -1,13 +1,14 @@
 /*!
- * \file ros_hash_authentication.cpp
- * \brief Provides authentication via hash strings.
+ * \file ros_mac_authentication.cpp
+ * \brief Provides authentication via a message authentication codes (MAC).
  *
  * This node provides a service call that can be used to authenticate a user to use the ROS server.
  * The node relies on a hash string that is made up of several pieces of information and hashed
- * using the SHA-1 algorithm.
+ * using the SHA-1 algorithm. This node is based on the best-practice method of a message
+ * authentication codes (MAC).
  *
  * \author Russell Toris, WPI - rctoris@wpi.edu
- * \date December 10, 2012
+ * \date March 4, 2013
  */
 
 #include <fstream>
@@ -25,7 +26,7 @@ using namespace ros;
  * The ROS parameter name for the file that contains the secret string. We do not store the actual
  * string in the parameter server as the parameter server itself may not be secure.
  */
-#define SECRET_FILE_PARAM "/ros_hash_authentication/secret_file_location"
+#define SECRET_FILE_PARAM "/ros_mac_authentication/secret_file_location"
 
 /*!
  * \def MISSING_PARAMETER
@@ -51,7 +52,7 @@ using namespace ros;
  */
 #define SECRET_LENGTH 16
 
-// the secret string used in the hash
+// the secret string used in the MAC
 string secret;
 
 bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication::Response &res)
@@ -84,8 +85,8 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
     for (int i = 0; i < SHA_DIGEST_LENGTH; i++)
       sprintf(&hex[i * 2], "%02x", sha1_hash[i]);
 
-    // an authenticated user must match the hash string
-    res.authenticated = (strcmp(hex, req.hash.c_str()) == 0);
+    // an authenticated user must match the MAC string
+    res.authenticated = (strcmp(hex, req.mac.c_str()) == 0);
   }
   else
     res.authenticated = false;
@@ -94,7 +95,7 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
 }
 
 /*!
- * Creates and runs the ros_hash_authentication node.
+ * Creates and runs the ros_mac_authentication node.
  *
  * \param argc argument count that is passed to ros::init
  * \param argv arguments that are passed to ros::init
@@ -103,7 +104,7 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
 int main(int argc, char **argv)
 {
   // initialize ROS and the node
-  init(argc, argv, "ros_hash_authentication");
+  init(argc, argv, "ros_mac_authentication");
   NodeHandle node;
 
   // check if we have to check the secret file
