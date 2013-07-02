@@ -73,7 +73,7 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
   {
     // create the string to hash
     stringstream ss;
-    ss << secret << req.client << req.dest << req.rand << req.t.toNSec() << req.level << req.end.toNSec();
+    ss << secret << req.client << req.dest << req.rand << req.t.sec << req.level << req.end.sec;
     string local_hash = ss.str();
 
     // check the request
