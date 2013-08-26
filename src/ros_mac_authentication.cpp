@@ -77,13 +77,13 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
     string local_hash = ss.str();
 
     // check the request
-    unsigned char sha1_hash[SHA_DIGEST_LENGTH];
-    SHA1((unsigned char *)local_hash.c_str(), local_hash.length(), sha1_hash);
+    unsigned char sha512_hash[SHA512_DIGEST_LENGTH];
+    SHA512((unsigned char *)local_hash.c_str(), local_hash.length(), sha512_hash);
 
     // convert to a hex string to compare
-    char hex[SHA_DIGEST_LENGTH * 2];
-    for (int i = 0; i < SHA_DIGEST_LENGTH; i++)
-      sprintf(&hex[i * 2], "%02x", sha1_hash[i]);
+    char hex[SHA512_DIGEST_LENGTH * 2];
+    for (int i = 0; i < SHA512_DIGEST_LENGTH; i++)
+      sprintf(&hex[i * 2], "%02x", sha512_hash[i]);
 
     // an authenticated user must match the MAC string
     res.authenticated = (strcmp(hex, req.mac.c_str()) == 0);
