@@ -56,8 +56,9 @@ install(TARGETS ros_mac_authentication
 #############
 ## Testing ##
 #############
-
-## Add gtest based cpp test target and link libraries
-add_executable(ros_mac_authentication_test test/ros_mac_authentication_test.cpp)
-target_link_libraries(ros_mac_authentication_test ${catkin_LIBRARIES} ${GTEST_LIBRARIES} crypto dl pthread)
-add_rostest(test/ros_mac_authentication.test)
+if(CATKIN_ENABLE_TESTING)
+  ## Add gtest based cpp test target and link libraries
+  add_executable(ros_mac_authentication_test test/ros_mac_authentication_test.cpp)
+  target_link_libraries(ros_mac_authentication_test ${catkin_LIBRARIES} ${GTEST_LIBRARIES} crypto dl pthread)
+  add_rostest(test/ros_mac_authentication.test)
+endif()
