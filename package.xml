@@ -2,7 +2,7 @@
 <package>
   <name>rosauth</name>
   <version>0.1.3</version>
-  <description>Server side tools for authorization and authentication of ROS clients.</description>
+  <description>Server Side tools for Authorization and Authentication of ROS Clients</description>
 
   <maintainer email="rctoris@wpi.edu">Russell Toris</maintainer>
   <author email="rctoris@wpi.edu">Russell Toris</author>
