@@ -28,6 +28,10 @@ script:
   - source /opt/ros/groovy/setup.bash
   - catkin_make
   - catkin_make install
+  - source devel/setup.bash
+  - rostest rosauth ros_mac_authentication.test
   - rm -rf build/ install/ devel/
   - catkin_make
   - catkin_make install
+  - source devel/setup.bash
+  - rostest rosauth ros_mac_authentication.test
