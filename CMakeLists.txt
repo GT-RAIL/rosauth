@@ -28,11 +28,15 @@ generate_messages(
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package()
+catkin_package(CATKIN_DEPENDS roscpp message_runtime)
 
 ###########
 ## Build ##
 ###########
+
+include_directories(
+    ${catkin_INCLUDE_DIRS}
+)
 
 ## Declare a cpp executable
 add_executable(ros_mac_authentication src/ros_mac_authentication.cpp)
