@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>rosauth</name>
-  <version>0.1.4</version>
+  <version>0.1.5</version>
   <description>Server Side tools for Authorization and Authentication of ROS Clients</description>
 
   <maintainer email="rctoris@wpi.edu">Russell Toris</maintainer>
