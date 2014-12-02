@@ -2,6 +2,15 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.5 (2014-12-02)
+------------------
+* Merge pull request #6 from forouher/develop
+  add missing catkin dependencies
+* add missing catkin dependencies
+* Now runs hydro and groovy
+* fixed dox file
+* Contributors: Dariush Forouher, Russell Toris
+
 0.1.4 (2014-04-03)
 ------------------
 * dox file fixed
