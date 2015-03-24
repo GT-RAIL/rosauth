@@ -2,6 +2,13 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.6 (2015-03-24)
+------------------
+* Merge pull request #5 from cottsay/hydro-devel
+  missing libssl-dev during build
+* Added libssl-dev to build_depend
+* Contributors: Russell Toris, Scott K Logan
+
 0.1.5 (2014-12-02)
 ------------------
 * Merge pull request #6 from forouher/develop
