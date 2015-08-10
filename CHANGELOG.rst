@@ -2,6 +2,13 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.7 (2015-08-10)
+------------------
+* Merge pull request #8 from ckrooss/develop
+  Added gencpp-dependency for test target
+* Added gencpp-dependency for test target
+* Contributors: Russell Toris, ckrooss
+
 0.1.6 (2015-03-24)
 ------------------
 * Merge pull request #5 from cottsay/hydro-devel
