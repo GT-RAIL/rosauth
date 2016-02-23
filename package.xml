@@ -10,8 +10,8 @@
   <license>BSD</license>
 
   <url type="website">http://ros.org/wiki/rosauth</url>
-  <url type="bugtracker">https://github.com/WPI-RAIL/rosauth/issues</url>
-  <url type="repository">https://github.com/WPI-RAIL/rosauth</url>
+  <url type="bugtracker">https://github.com/GT-RAIL/rosauth/issues</url>
+  <url type="repository">https://github.com/GT-RAIL/rosauth</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>libssl-dev</build_depend>

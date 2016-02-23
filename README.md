@@ -1,4 +1,4 @@
-rosauth [![Build Status](https://api.travis-ci.org/WPI-RAIL/rosauth.png)](https://travis-ci.org/WPI-RAIL/rosauth)
+rosauth [![Build Status](https://api.travis-ci.org/GT-RAIL/rosauth.png)](https://travis-ci.org/GT-RAIL/rosauth)
 =======
 
 #### Server Side tools for Authorization and Authentication of ROS Clients
