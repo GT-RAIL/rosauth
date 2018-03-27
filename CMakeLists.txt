@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(rosauth)
 
 find_package(OpenSSL REQUIRED)
+find_package(Threads REQUIRED)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -68,6 +69,8 @@ if(CATKIN_ENABLE_TESTING)
   ## Add gtest based cpp test target and link libraries
   add_executable(ros_mac_authentication_test test/ros_mac_authentication_test.cpp)
   add_dependencies(ros_mac_authentication_test ${PROJECT_NAME}_gencpp)
-  target_link_libraries(ros_mac_authentication_test ${catkin_LIBRARIES} ${GTEST_LIBRARIES} ${OPENSSL_LIBRARIES} ${CMAKE_DL_LIBS} pthread)
+  target_link_libraries(ros_mac_authentication_test
+    ${catkin_LIBRARIES} ${GTEST_LIBRARIES} ${OPENSSL_LIBRARIES} ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT}
+  )
   add_rostest(test/ros_mac_authentication.test)
 endif()
