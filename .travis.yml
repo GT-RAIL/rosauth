@@ -25,12 +25,6 @@ install:
   - rosdep install --from-paths src --ignore-src --rosdistro indigo -y
 
 script:
-  - source /opt/ros/groovy/setup.bash
-  - catkin_make
-  - catkin_make install
-  - source devel/setup.bash
-  - rostest rosauth ros_mac_authentication.test
-  - rm -rf build/ install/ devel/
   - source /opt/ros/indigo/setup.bash
   - catkin_make
   - catkin_make install
