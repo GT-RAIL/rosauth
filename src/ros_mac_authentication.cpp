@@ -29,6 +29,12 @@ using namespace ros;
 #define SECRET_FILE_PARAM "/ros_mac_authentication/secret_file_location"
 
 /*!
+ * \def ALLOWED_TIME_DELTA_PARAM
+ * The ROS parameter for the allowed time delta in the time check. A negative value disables the time check.
+ */
+#define ALLOWED_TIME_DELTA_PARAM "allowed_time_delta"
+
+/*!
  * \def MISSING_PARAMETER
  * Error code for a missing SECRET_FILE_PARAM ROS parameter.
  */
@@ -55,6 +61,9 @@ using namespace ros;
 // the secret string used in the MAC
 string secret;
 
+// the allowed time delta
+double allowed_time_delta;
+
 bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication::Response &res)
 {
   // keep track of the current time
@@ -65,7 +74,7 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
     diff = new Duration(req.t - t);
   else
     diff = new Duration(t - req.t);
-  bool time_check = diff->sec < 5 && req.end > t;
+  bool time_check = allowed_time_delta < 0 || (diff->sec < allowed_time_delta && req.end > t);
   delete diff;
 
   // check if we pass the time requirement
@@ -106,6 +115,9 @@ int main(int argc, char **argv)
   // initialize ROS and the node
   init(argc, argv, "ros_mac_authentication");
   NodeHandle node;
+  NodeHandle node_param("~");
+
+  allowed_time_delta = node_param.param("allowed_time_delta", 5);
 
   // check if we have to check the secret file
   string file;
