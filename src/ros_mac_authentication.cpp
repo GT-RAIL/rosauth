@@ -117,7 +117,7 @@ int main(int argc, char **argv)
   NodeHandle node;
   NodeHandle node_param("~");
 
-  allowed_time_delta = node_param.param("allowed_time_delta", 5);
+  allowed_time_delta = node_param.param(ALLOWED_TIME_DELTA_PARAM, 5);
 
   // check if we have to check the secret file
   string file;
