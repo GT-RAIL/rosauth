@@ -37,13 +37,13 @@ catkin_package(CATKIN_DEPENDS roscpp message_runtime)
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  ${OPENSSL_INCLUDE_DIR}
 )
 
 ## Declare a cpp executable
 add_executable(ros_mac_authentication src/ros_mac_authentication.cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(ros_mac_authentication ${catkin_LIBRARIES} ${OPENSSL_LIBRARIES})
 target_link_libraries(ros_mac_authentication ${catkin_LIBRARIES} OpenSSL::SSL OpenSSL::Crypto)
 
 add_dependencies(ros_mac_authentication ${PROJECT_NAME}_gencpp)
