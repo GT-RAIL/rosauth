@@ -4,7 +4,7 @@
   <version>0.1.7</version>
   <description>Server Side tools for Authorization and Authentication of ROS Clients</description>
 
-  <maintainer email="rctoris@wpi.edu">Russell Toris</maintainer>
+  <maintainer email="rein@eurotec.com">Rein Appeldoorn</maintainer>
   <author email="rctoris@wpi.edu">Russell Toris</author>
 
   <license>BSD</license>
