@@ -2,8 +2,8 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2019-08-30)
+------------------
 * chore: Update README, Author, maintainer
 * fix: rostest test dependency (`#26 <https://github.com/GT-RAIL/rosauth/issues/26>`_)
 * new: parameters in node namespace (`#22 <https://github.com/GT-RAIL/rosauth/issues/22>`_)
