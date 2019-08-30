@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>rosauth</name>
-  <version>0.1.7</version>
+  <version>1.0.0</version>
   <description>Server Side tools for Authorization and Authentication of ROS Clients</description>
 
-  <maintainer email="rctoris@wpi.edu">Russell Toris</maintainer>
+  <maintainer email="rein@eurotec.com">Rein Appeldoorn</maintainer>
   <author email="rctoris@wpi.edu">Russell Toris</author>
 
   <license>BSD</license>
@@ -17,8 +17,9 @@
   <build_depend>libssl-dev</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>message_generation</build_depend>
-  <build_depend>rostest</build_depend>
 
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>roscpp</exec_depend>
+
+  <test_depend>rostest</test_depend>
 </package>

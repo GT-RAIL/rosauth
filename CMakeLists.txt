@@ -4,7 +4,7 @@ project(rosauth)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp message_generation rostest)
+find_package(catkin REQUIRED COMPONENTS roscpp message_generation)
 find_package(OpenSSL REQUIRED)
 
 #######################################
@@ -62,6 +62,7 @@ install(TARGETS ros_mac_authentication
 #############
 
 if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
   ## Add gtest based cpp test target and link libraries
   add_executable(ros_mac_authentication_test test/ros_mac_authentication_test.cpp)
   add_dependencies(ros_mac_authentication_test ${PROJECT_NAME}_gencpp)
