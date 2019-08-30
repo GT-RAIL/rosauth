@@ -2,6 +2,16 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: Update README, Author, maintainer
+* fix: rostest test dependency (`#26 <https://github.com/GT-RAIL/rosauth/issues/26>`_)
+* new: parameters in node namespace (`#22 <https://github.com/GT-RAIL/rosauth/issues/22>`_)
+* new: parameter for allowed_time_delta (`#24 <https://github.com/GT-RAIL/rosauth/issues/24>`_)
+* Industrial CI ROS kinetic, melodic
+* Use package format 2
+* Contributors: David Kent, Dirk Thomas, Rein Appeldoorn, Russell Toris
+
 0.1.7 (2015-08-10)
 ------------------
 * Merge pull request #8 from ckrooss/develop
