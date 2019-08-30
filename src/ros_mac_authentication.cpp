@@ -26,7 +26,7 @@ using namespace ros;
  * The ROS parameter name for the file that contains the secret string. We do not store the actual
  * string in the parameter server as the parameter server itself may not be secure.
  */
-#define SECRET_FILE_PARAM "/ros_mac_authentication/secret_file_location"
+#define SECRET_FILE_PARAM "secret_file_location"
 
 /*!
  * \def ALLOWED_TIME_DELTA_PARAM
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 
   // check if we have to check the secret file
   string file;
-  if (!node.getParam(SECRET_FILE_PARAM, file))
+  if (!node_param.getParam(SECRET_FILE_PARAM, file))
   {
     ROS_ERROR("Parameter '%s' not found.", SECRET_FILE_PARAM);
     return MISSING_PARAMETER;
