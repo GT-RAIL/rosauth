@@ -1,3 +1,4 @@
+#define _SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING
 #include <fstream>
 #include <gtest/gtest.h>
 #include <openssl/sha.h>
