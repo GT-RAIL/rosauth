@@ -90,7 +90,7 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
     SHA512((unsigned char *)local_hash.c_str(), local_hash.length(), sha512_hash);
 
     // convert to a hex string to compare
-    char hex[SHA512_DIGEST_LENGTH * 2];
+    char hex[SHA512_DIGEST_LENGTH * 2 + 1];
     for (int i = 0; i < SHA512_DIGEST_LENGTH; i++)
       sprintf(&hex[i * 2], "%02x", sha512_hash[i]);
 
