@@ -2,8 +2,8 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.1 (2019-09-02)
+------------------
 * Fix buffer overrun (`#19 <https://github.com/GT-RAIL/rosauth/issues/19>`_)
 * enable Windows build (`#25 <https://github.com/GT-RAIL/rosauth/issues/25>`_)
 * Contributors: Atsushi Watanabe, James Xu
