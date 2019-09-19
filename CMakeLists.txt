@@ -1,75 +1,71 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(rosauth)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp message_generation)
+find_package(ament_cmake_ros REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 find_package(OpenSSL REQUIRED)
 
-#######################################
-## Declare ROS messages and services ##
-#######################################
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
 
-## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  Authentication.srv
+rosidl_generate_interfaces(${PROJECT_NAME}
+  srv/Authentication.srv
+  DEPENDENCIES builtin_interfaces
 )
 
-## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-)
-
-###################################################
-## Declare things to be passed to other projects ##
-###################################################
-
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(CATKIN_DEPENDS roscpp message_runtime)
-
-###########
-## Build ##
-###########
-
-include_directories(
-  ${catkin_INCLUDE_DIRS}
-  ${OPENSSL_INCLUDE_DIR}
-)
-
-## Declare a cpp executable
 add_executable(ros_mac_authentication src/ros_mac_authentication.cpp)
+add_dependencies(ros_mac_authentication ${PROJECT_NAME})
+ament_target_dependencies(ros_mac_authentication rclcpp)
+rosidl_target_interfaces(
+  ros_mac_authentication ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(ros_mac_authentication crypto)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(ros_mac_authentication ${catkin_LIBRARIES} OpenSSL::SSL OpenSSL::Crypto)
 
-add_dependencies(ros_mac_authentication ${PROJECT_NAME}_gencpp)
+ament_export_dependencies(rosidl_default_runtime)
 
-#############
-## Install ##
-#############
+ament_package()
 
-## Mark executables and/or libraries for installation
 install(TARGETS ros_mac_authentication
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 #############
 ## Testing ##
 #############
 
-if(CATKIN_ENABLE_TESTING)
-  find_package(rostest REQUIRED)
+if(BUILD_TESTING)
+  find_package(ament_cmake_gtest REQUIRED)
   ## Add gtest based cpp test target and link libraries
-  add_executable(ros_mac_authentication_test test/ros_mac_authentication_test.cpp)
-  add_dependencies(ros_mac_authentication_test ${PROJECT_NAME}_gencpp)
-  if(MSVC)
-    target_link_libraries(ros_mac_authentication_test ${catkin_LIBRARIES} ${GTEST_LIBRARIES} OpenSSL::SSL OpenSSL::Crypto)
-  else()
-    target_link_libraries(ros_mac_authentication_test ${catkin_LIBRARIES} ${GTEST_LIBRARIES} OpenSSL::SSL OpenSSL::Crypto dl pthread)
-  endif()
-  add_rostest(test/ros_mac_authentication.test)
+  ament_add_gtest_executable(ros_mac_authentication_test test/ros_mac_authentication_test.cpp)
+  rosidl_target_interfaces(ros_mac_authentication_test
+    ${PROJECT_NAME} "rosidl_typesupport_cpp")
+  ament_target_dependencies(ros_mac_authentication_test builtin_interfaces rclcpp)
+  target_link_libraries(ros_mac_authentication_test crypto dl pthread)
+
+  # TODO replace parameter file with just passing the parameter once that is supported
+  set(PARAMETERS_YAML_FILE "${CMAKE_CURRENT_BINARY_DIR}/secret.yaml")
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/test/secret.yaml.in"
+    "${PARAMETERS_YAML_FILE}"
+    @ONLY)
+
+  set(ROS_MAC_AUTHENTICATION_EXECUTABLE $<TARGET_FILE:ros_mac_authentication>)
+  set(ROS_MAC_AUTHENTICATION_TEST_EXECUTABLE $<TARGET_FILE:ros_mac_authentication_test>)
+  set(generated_test_file "${CMAKE_CURRENT_BINARY_DIR}/ros_mac_authentication_test")
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/test/ros_mac_authentication_test.py.in"
+    "${generated_test_file}.py.genexp"
+    @ONLY)
+  file(GENERATE
+    OUTPUT "${generated_test_file}_$<CONFIG>.py"
+    INPUT "${generated_test_file}.py.genexp"
+  )
+  ament_add_test(tests
+    COMMAND "${generated_test_file}_$<CONFIG>.py"
+    GENERATE_RESULT_FOR_RETURN_CODE_ZERO)
 endif()

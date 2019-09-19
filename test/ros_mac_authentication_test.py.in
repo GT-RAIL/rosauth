@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+
+import sys
+
+from launch import LaunchDescription
+from launch import LaunchService
+from launch.actions import ExecuteProcess
+
+from launch_testing.legacy import LaunchTestService
+
+
+def main(argv=sys.argv[1:]):
+    ld = LaunchDescription()
+
+    server_action = ExecuteProcess(
+        cmd=[
+            '@ROS_MAC_AUTHENTICATION_EXECUTABLE@',
+            '__params:=@PARAMETERS_YAML_FILE@'],
+        cwd='@CMAKE_CURRENT_BINARY_DIR@')
+    ld.add_action(server_action)
+
+    test_action = ExecuteProcess(
+        cmd=['@ROS_MAC_AUTHENTICATION_TEST_EXECUTABLE@'],
+        cwd='@CMAKE_CURRENT_BINARY_DIR@')
+
+    lts = LaunchTestService()
+    lts.add_test_action(ld, test_action)
+
+    ls = LaunchService(argv=argv)
+    ls.include_launch_description(ld)
+    return lts.run(ls)
+
+
+if __name__ == '__main__':
+    sys.exit(main())

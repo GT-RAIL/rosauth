@@ -13,13 +13,12 @@
 
 #include <fstream>
 #include <openssl/sha.h>
-#include <ros/ros.h>
-#include <rosauth/Authentication.h>
+#include <rclcpp/rclcpp.hpp>
+#include <rosauth/srv/authentication.hpp>
 #include <sstream>
 #include <string>
 
 using namespace std;
-using namespace ros;
 
 /*!
  * \def SECRET_FILE_PARAM
@@ -64,44 +63,58 @@ string secret;
 // the allowed time delta
 double allowed_time_delta;
 
-bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication::Response &res)
+class ServerNode : public rclcpp::Node
 {
-  // keep track of the current time
-  Time t = Time::now();
-  // clocks can be out of sync, check which comes later
-  Duration *diff;
-  if (req.t > t)
-    diff = new Duration(req.t - t);
-  else
-    diff = new Duration(t - req.t);
-  bool time_check = allowed_time_delta < 0 || (diff->sec < allowed_time_delta && req.end > t);
-  delete diff;
+public:
+  explicit ServerNode(
+    const string & node_name,
+    const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
+  : Node(node_name, options)
+  {}
 
-  // check if we pass the time requirement
-  if (time_check)
-  {
-    // create the string to hash
-    stringstream ss;
-    ss << secret << req.client << req.dest << req.rand << req.t.sec << req.level << req.end.sec;
-    string local_hash = ss.str();
+  bool authenticate(
+    rosauth::srv::Authentication::Request::SharedPtr req,
+    rosauth::srv::Authentication::Response::SharedPtr res
+  ) {
+    // keep track of the current time
+    auto t = this->now();
+    auto req_t = rclcpp::Time(req->t);
+    // clocks can be out of sync, check which comes later
+    rclcpp::Duration diff(0, 0);
+    if (req_t > t)
+      diff = req_t - t;
+    else
+      diff = t - req_t;
+    bool time_check = allowed_time_delta < 0 || (diff.seconds() < allowed_time_delta && rclcpp::Time(req->end) > t);
 
-    // check the request
-    unsigned char sha512_hash[SHA512_DIGEST_LENGTH];
-    SHA512((unsigned char *)local_hash.c_str(), local_hash.length(), sha512_hash);
+    // check if we pass the time requirement
+    RCLCPP_INFO(get_logger(), "time_check");
+    if (time_check)
+    {
+      RCLCPP_INFO(get_logger(), "time_check PASSED");
+      // create the string to hash
+      stringstream ss;
+      ss << secret << req->client << req->dest << req->rand << req->t.sec << req->level << req->end.sec;
+      string local_hash = ss.str();
 
-    // convert to a hex string to compare
-    char hex[SHA512_DIGEST_LENGTH * 2 + 1];
-    for (int i = 0; i < SHA512_DIGEST_LENGTH; i++)
-      sprintf(&hex[i * 2], "%02x", sha512_hash[i]);
+      // check the request
+      unsigned char sha512_hash[SHA512_DIGEST_LENGTH];
+      SHA512((unsigned char *)local_hash.c_str(), local_hash.length(), sha512_hash);
 
-    // an authenticated user must match the MAC string
-    res.authenticated = (strcmp(hex, req.mac.c_str()) == 0);
+      // convert to a hex string to compare
+      char hex[SHA512_DIGEST_LENGTH * 2 + 1];
+      for (int i = 0; i < SHA512_DIGEST_LENGTH; i++)
+        sprintf(&hex[i * 2], "%02x", sha512_hash[i]);
+
+      // an authenticated user must match the MAC string
+      res->authenticated = (strcmp(hex, req->mac.c_str()) == 0);
+    }
+    else
+      res->authenticated = false;
+
+    return true;
   }
-  else
-    res.authenticated = false;
-
-  return true;
-}
+};
 
 /*!
  * Creates and runs the ros_mac_authentication node.
@@ -113,24 +126,33 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
 int main(int argc, char **argv)
 {
   // initialize ROS and the node
-  init(argc, argv, "ros_mac_authentication");
-  NodeHandle node;
-  NodeHandle node_param("~");
+  rclcpp::init(argc, argv);
+  rclcpp::NodeOptions options;
+  options.automatically_declare_parameters_from_overrides(true);
+  auto node = std::make_shared<ServerNode>("ros_mac_authentication", options);
 
-  allowed_time_delta = node_param.param(ALLOWED_TIME_DELTA_PARAM, 5);
+  rclcpp::Parameter param;
+  if (node->get_parameter(ALLOWED_TIME_DELTA_PARAM, param))
+  {
+    allowed_time_delta = param.as_int();
+  }
+  else
+  {
+    allowed_time_delta = 5;
+  }
 
   // check if we have to check the secret file
-  string file;
-  if (!node_param.getParam(SECRET_FILE_PARAM, file))
+  rclcpp::Parameter file;
+  if (!node->get_parameter(SECRET_FILE_PARAM, file))
   {
-    ROS_ERROR("Parameter '%s' not found.", SECRET_FILE_PARAM);
+    RCLCPP_ERROR(node->get_logger(), "Parameter '%s' not found.", SECRET_FILE_PARAM);
     return MISSING_PARAMETER;
   }
   else
   {
     // try and load the file
     ifstream f;
-    f.open(file.c_str(), ifstream::in);
+    f.open(file.as_string().c_str(), ifstream::in);
     if (f.is_open())
     {
       // should be a 1 line file with the string
@@ -139,21 +161,22 @@ int main(int argc, char **argv)
       // check the length of the secret
       if (secret.length() != SECRET_LENGTH)
       {
-        ROS_ERROR("Secret string not of length %d.", SECRET_LENGTH);
+        RCLCPP_ERROR(node->get_logger(), "Secret string not of length %d.", SECRET_LENGTH);
         return INVALID_SECRET;
       }
       else
       {
-        ServiceServer service = node.advertiseService("authenticate", authenticate);
-        ROS_INFO("ROS Authentication Server Started");
-        spin();
+        auto service = node->create_service<rosauth::srv::Authentication>(
+          "authenticate", std::bind(&ServerNode::authenticate, node, placeholders::_1, placeholders::_2));
+        RCLCPP_INFO(node->get_logger(), "ROS Authentication Server Started");
+        rclcpp::spin(node);
 
         return EXIT_SUCCESS;
       }
     }
     else
     {
-      ROS_ERROR("Could not read from file '%s'", file.c_str());
+      RCLCPP_ERROR(node->get_logger(), "Could not read from file '%s'", file.as_string().c_str());
       return FILE_IO_ERROR;
     }
   }
