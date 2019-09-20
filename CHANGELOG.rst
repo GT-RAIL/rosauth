@@ -2,6 +2,10 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming release
+-------------------
+* Port to ROS 2
+
 1.0.1 (2019-09-02)
 ------------------
 * Fix buffer overrun (`#19 <https://github.com/GT-RAIL/rosauth/issues/19>`_)
