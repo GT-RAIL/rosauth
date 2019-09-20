@@ -2,6 +2,10 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add missing test dependency
+
 2.0.0 (2019-09-19)
 ------------------
 * Port to ROS 2
