@@ -2,8 +2,8 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming release
--------------------
+2.0.0 (2019-09-19)
+------------------
 * Port to ROS 2
 
 1.0.1 (2019-09-02)
