@@ -52,7 +52,14 @@ if(BUILD_TESTING)
   configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/test/secret.yaml.in"
     "${PARAMETERS_YAML_FILE}"
-    @ONLY)
+    @ONLY
+  )
+
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/test/valid.secret"
+    "${CMAKE_CURRENT_BINARY_DIR}/valid.secret"
+    COPYONLY
+  )
 
   set(ROS_MAC_AUTHENTICATION_EXECUTABLE $<TARGET_FILE:ros_mac_authentication>)
   set(ROS_MAC_AUTHENTICATION_TEST_EXECUTABLE $<TARGET_FILE:ros_mac_authentication_test>)
