@@ -5,6 +5,7 @@ import sys
 from launch import LaunchDescription
 from launch import LaunchService
 from launch.actions import ExecuteProcess
+from launch_ros.actions import Node
 
 from launch_testing.legacy import LaunchTestService
 
@@ -12,12 +13,13 @@ from launch_testing.legacy import LaunchTestService
 def main(argv=sys.argv[1:]):
     ld = LaunchDescription()
 
-    server_action = ExecuteProcess(
-        cmd=[
-            '@ROS_MAC_AUTHENTICATION_EXECUTABLE@',
-            '__params:=@PARAMETERS_YAML_FILE@'],
-        cwd='@CMAKE_CURRENT_BINARY_DIR@')
-    ld.add_action(server_action)
+    server_node = Node(
+      package='rosauth',
+      node_executable='ros_mac_authentication',
+      parameters=['@PARAMETERS_YAML_FILE@']
+    )
+
+    ld.add_action(server_node)
 
     test_action = ExecuteProcess(
         cmd=['@ROS_MAC_AUTHENTICATION_TEST_EXECUTABLE@'],
