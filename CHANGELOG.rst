@@ -2,8 +2,8 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.2 (2020-12-08)
+------------------
 * Fixing tests for foxy. (`#32 <https://github.com/GT-RAIL/rosauth/issues/32>`_)
 * Contributors: Joshua Whitley
 
