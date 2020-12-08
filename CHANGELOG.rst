@@ -2,6 +2,11 @@
 Changelog for package rosauth
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fixing tests for foxy. (`#32 <https://github.com/GT-RAIL/rosauth/issues/32>`_)
+* Contributors: Joshua Whitley
+
 2.0.1 (2019-09-19)
 ------------------
 * add missing test dependency
