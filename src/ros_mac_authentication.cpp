@@ -12,6 +12,7 @@
  */
 
 #include <fstream>
+#include <openssl/crypto.h>
 #include <openssl/sha.h>
 #include <ros/ros.h>
 #include <rosauth/Authentication.h>
@@ -95,7 +96,7 @@ bool authenticate(rosauth::Authentication::Request &req, rosauth::Authentication
       sprintf(&hex[i * 2], "%02x", sha512_hash[i]);
 
     // an authenticated user must match the MAC string
-    res.authenticated = (strcmp(hex, req.mac.c_str()) == 0);
+    res.authenticated = (CRYPTO_memcmp(hex, req.mac.c_str(), SHA512_DIGEST_LENGTH) == 0);
   }
   else
     res.authenticated = false;
