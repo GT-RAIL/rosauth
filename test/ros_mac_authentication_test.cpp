@@ -46,7 +46,7 @@ TEST(RosHashAuthentication, validAuthentication)
 
   auto result = client->async_send_request(request);
   EXPECT_TRUE(rclcpp::spin_until_future_complete(node, result) ==
-    rclcpp::executor::FutureReturnCode::SUCCESS);
+    rclcpp::FutureReturnCode::SUCCESS);
   auto response = result.get();
   EXPECT_TRUE(response->authenticated);
 }
